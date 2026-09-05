@@ -174,6 +174,29 @@ select{width:auto;min-width:130px;min-height:42px;padding:8px 10px;font-size:14p
 .mdl .btns{margin-top:16px;display:flex;gap:8px;justify-content:flex-end}
 
 /* bottom nav mobile */
+/* pipeline */
+.pill{font-size:12px;border-radius:999px;padding:4px 12px;background:#F1EFE8;color:#5F5E5A;display:inline-flex;align-items:center;gap:6px;min-height:28px}
+.pill .dotp{width:8px;height:8px;border-radius:50%;background:#B4B2A9}
+.pill.on{background:var(--green-bg);color:var(--green)}
+.pill.on .dotp{background:var(--green)}
+.pill.off{background:var(--red-bg);color:var(--red)}
+.pill.off .dotp{background:var(--red)}
+.pipe-sec{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;margin-bottom:14px}
+.pipe-sec h3{font-size:14px;color:var(--main-d);display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pipe-sec h3 .n{background:var(--main-l);color:var(--main-d);border-radius:999px;padding:0 9px;font-size:12px}
+.pipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+.pcard2{background:#F7FAFD;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:7px}
+.pcard2 .pt{font-size:14px;font-weight:600;display:flex;align-items:center;gap:7px;min-width:0}
+.pcard2 .pt .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard2 .pm{font-size:12px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap}
+.pcard2 .pm b{color:var(--main-d);font-weight:500}
+.steps{display:flex;gap:5px;flex-wrap:wrap}
+.step{font-size:11px;padding:1px 8px;border-radius:6px;background:#ECEEF1;color:#8B98A8}
+.step.done{background:var(--green-bg);color:var(--green)}
+.step.act{background:var(--main);color:#fff}
+.plog{background:#0F1B2A;color:#CFE3F5;border-radius:10px;padding:10px 13px;font-size:12px;font-family:Consolas,Menlo,monospace;white-space:pre-wrap;max-height:280px;overflow:auto;line-height:1.55;word-break:break-all}
+.pipe-hint{background:var(--amber-bg);border:1px solid #F0DCA0;color:#7A5B12;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:13px;display:flex;gap:8px;align-items:flex-start}
+.pipe-hint code{background:rgba(0,0,0,.06);border-radius:5px;padding:0 6px}
 .bottomnav{display:none}
 @media(max-width:760px){
   header{padding:14px 12px 12px}
@@ -240,6 +263,7 @@ footer b{color:var(--sub)}
     <button class="tab-btn active" data-tab="knowledge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.4-3.6-2-6-2v13c2.4 0 4.5.6 6 2 1.5-1.4 3.6-2 6-2V4c-2.4 0-4.5.6-6 2z"/></svg></span>数据知识库</button>
     <button class="tab-btn" data-tab="papers"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>论文自动流</button>
     <button class="tab-btn" data-tab="notes"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>我的积累</button>
+    <button class="tab-btn" data-tab="pipeline"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg></span>数据处理中心</button>
   </nav>
 
   <!-- 知识库 -->
@@ -296,9 +320,32 @@ footer b{color:var(--sub)}
     <div class="n-list" id="nList"></div>
   </section>
 
+  <!-- 数据处理中心 -->
+  <section class="panel" id="panel-pipeline">
+    <div class="section-head">
+      <h2><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg></span>数据处理中心</h2>
+      <span class="pill" id="pipeStatus">检测引擎…</span>
+      <button class="act primary" id="pipeRefresh" style="margin-left:auto"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 11-3-6.7"/><path d="M21 3v5h-5"/></svg></span>刷新</button>
+    </div>
+    <div id="pipeHint"></div>
+    <div class="pipe-sec" id="pipeRawSec">
+      <h3>原始采集源 <span class="n" id="pipeRawN">0</span><span style="font-size:12px;color:var(--weak);font-weight:400">（ego / UMI / 仿真等异构数据，待转标准集）</span></h3>
+      <div class="pipe-grid" id="pipeRawList"></div>
+    </div>
+    <div class="pipe-sec" id="pipeDsSec">
+      <h3>标准数据集 <span class="n" id="pipeDsN">0</span><span style="font-size:12px;color:var(--weak);font-weight:400">（已入库，走处理链 01→08 / 登记）</span></h3>
+      <div class="pipe-grid" id="pipeDsList"></div>
+    </div>
+    <div class="pipe-sec">
+      <h3>最近执行日志</h3>
+      <pre class="plog" id="pipeLog">尚未执行操作</pre>
+    </div>
+  </section>
+
   <footer>
     数据来源：<b>data/knowledge.js</b>（知识库，人工维护）与 <b>data/papers.js</b>（论文流，每日自动任务写入）。两者随 git 仓库同步，两台电脑 pull 后即一致。<br>
-    个人状态（已读 / 收藏 / 本机笔记）存于浏览器 localStorage，每台电脑各自独立；请定期「导出备份」，换电脑或清缓存后可「导入恢复」迁移。论文与知识库内容以 data/ 数据文件为准，随 git 同步，删除类操作均有二次确认。
+    个人状态（已读 / 收藏 / 本机笔记）存于浏览器 localStorage，每台电脑各自独立；请定期「导出备份」，换电脑或清缓存后可「导入恢复」迁移。论文与知识库内容以 data/ 数据文件为准，随 git 同步，删除类操作均有二次确认。<br>
+    「数据处理中心」需通过桌面启动器打开才可用：双击 <b>innov-dataprep\start_desk.bat</b>（自动开独立窗口 + 连接本地引擎）；直接用浏览器打开本文件时该模块只读提示。
   </footer>
 </div>
 
@@ -306,6 +353,7 @@ footer b{color:var(--sub)}
   <button class="bn-btn active" data-tab="knowledge"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.4-3.6-2-6-2v13c2.4 0 4.5.6 6 2 1.5-1.4 3.6-2 6-2V4c-2.4 0-4.5.6-6 2z"/></svg></span>知识库</button>
   <button class="bn-btn" data-tab="papers"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>论文流</button>
   <button class="bn-btn" data-tab="notes"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>积累</button>
+  <button class="bn-btn" data-tab="pipeline"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8"/></svg></span>数据中心</button>
 </nav>
 
 <div class="mask" id="mask">
@@ -635,6 +683,118 @@ function renderNotes() {
   }).join("");
 }
 
+/* ========= 数据处理中心（页面 ↔ 本地引擎，单向：fetch → 渲染） ========= */
+var Pipeline = { items: [], loaded: false, busy: false, lastLog: "" };
+function engineLive() { return location.protocol === "http:" || location.protocol === "https:"; }
+function stepDone(s) { return s ? '<span class="step done">✓ ' + s + "</span>" : ""; }
+
+function renderPipelineShell() {
+  var live = engineLive();
+  var st = document.getElementById("pipeStatus");
+  if (!live) {
+    st.className = "pill off";
+    st.innerHTML = '<span class="dotp"></span>未连接引擎（浏览器直开模式）';
+  } else if (Pipeline.busy) {
+    st.className = "pill";
+    st.innerHTML = '<span class="dotp"></span>执行中…';
+  } else if (Pipeline.loaded) {
+    st.className = "pill on";
+    st.innerHTML = '<span class="dotp"></span>引擎在线 · ' + Pipeline.items.length + " 项";
+  } else {
+    st.className = "pill";
+    st.innerHTML = '<span class="dotp"></span>正在连接引擎…';
+  }
+  var hint = document.getElementById("pipeHint");
+  if (!live) {
+    hint.innerHTML = '<div class="pipe-hint">当前为浏览器直开模式，「数据处理中心」需要本地引擎才能执行操作。' +
+      '请双击 <code>innov-dataprep\\start_desk.bat</code> 以桌面方式打开（自动独立窗口 + 引擎连接）。' +
+      '本页其它模块（知识库 / 论文流 / 积累）不受影响，可正常使用。</div>';
+  } else {
+    hint.innerHTML = "";
+  }
+  var raws = Pipeline.items.filter(function (i) { return i.kind === "raw"; });
+  var dss = Pipeline.items.filter(function (i) { return i.kind === "dataset"; });
+  document.getElementById("pipeRawN").textContent = raws.length;
+  document.getElementById("pipeDsN").textContent = dss.length;
+  document.getElementById("pipeRawList").innerHTML = renderRawCards(raws);
+  document.getElementById("pipeDsList").innerHTML = renderDsCards(dss);
+  document.getElementById("pipeLog").textContent = Pipeline.lastLog || "尚未执行操作";
+}
+
+function renderRawCards(raws) {
+  if (!raws.length) return '<div class="pempty">暂无原始源。把 ego/UMI/仿真等原始目录放进引擎扫描范围（config paths.batches 或 ingest_demo/）后刷新可见。</div>';
+  return raws.map(function (i) {
+    return '<div class="pcard2">' +
+      '<div class="pt"><span class="cat ' + (i.source_type || "") + '">' + (i.source_type || "raw") + "</span><span class=\"nm\">" + esc(i.name) + "</span></div>" +
+      '<div class="pm">' + (i.task ? "<span>任务 <b>" + esc(i.task) + "</b></span>" : "") + "<span>未转换</span></div>" +
+      '<div class="acts"><button class="act primary" data-pipe-run="ingest" data-pipe-target="' + esc(i.path) + '">转为标准数据集</button></div>' +
+      "</div>";
+  }).join("");
+}
+
+function renderDsCards(dss) {
+  if (!dss.length) return '<div class="pempty">暂无标准数据集。先对原始源执行「转为标准数据集」。</div>';
+  return dss.map(function (i) {
+    var st = i.steps || {};
+    var badges = '<span class="cat ' + (i.source_type || "") + '">' + (i.source_type || "teleop") + "</span>" +
+      '<span class="cat ' + (i.format || "") + '">' + (i.format || "") + "</span>";
+    var steps = stepDone("INGEST") + (st.clean ? '<span class="step done">✓ 清洗</span>' : "") +
+      (st.verify ? '<span class="step done">✓ 校验</span>' : "") + (st.pack ? '<span class="step done">✓ 打包</span>' : "");
+    return '<div class="pcard2">' +
+      '<div class="pt">' + badges + '<span class="nm">' + esc(i.name) + "</span></div>" +
+      '<div class="pm">' +
+      (i.robot ? "<span>机器人 <b>" + esc(i.robot) + "</b></span>" : "") +
+      (i.episodes != null ? "<span>集数 <b>" + i.episodes + "</b></span>" : "") +
+      (i.frames ? "<span>帧 <b>" + i.frames + "</b></span>" : "") +
+      (i.fps ? "<span><b>" + i.fps + "</b>fps</span>" : "") +
+      (i.cams && i.cams.length ? "<span>相机 <b>" + esc(i.cams.join("/")) + "</b></span>" : "") +
+      "</div>" +
+      '<div class="steps">' + (steps || '<span class="step">未处理</span>') + "</div>" +
+      '<div class="acts">' +
+      '<button class="act" data-pipe-run="inspect" data-pipe-target="' + esc(i.path) + '">盘点 01</button>' +
+      '<button class="act" data-pipe-run="clean" data-pipe-target="' + esc(i.path) + '">清洗 03</button>' +
+      '<button class="act" data-pipe-run="verify" data-pipe-target="' + esc(i.path) + '">校验 07</button>' +
+      '<button class="act" data-pipe-run="pack" data-pipe-target="' + esc(i.path) + '">打包 08</button>' +
+      '<button class="act" data-pipe-run="record" data-pipe-target="' + esc(i.path) + '">登记台账</button>' +
+      "</div></div>";
+  }).join("");
+}
+
+function refreshPipeline() {
+  if (!engineLive()) { Pipeline.loaded = false; renderPipelineShell(); return Promise.resolve(); }
+  Pipeline.busy = true;
+  renderPipelineShell();
+  return fetch("/api/batches").then(function (r) { return r.json(); }).then(function (d) {
+    Pipeline.items = (d && d.items) || [];
+    Pipeline.loaded = true;
+  }).catch(function () {
+    Pipeline.items = [];
+    Pipeline.loaded = false;
+  }).then(function () {
+    Pipeline.busy = false;
+    renderPipelineShell();
+  });
+}
+
+function pipeRun(tool, target) {
+  if (Pipeline.busy || !engineLive()) return;
+  Pipeline.busy = true;
+  Pipeline.lastLog = "发起任务：" + tool + " → " + target + "\n…";
+  renderPipelineShell();
+  return fetch("/api/run", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tool: tool, target: target })
+  }).then(function (r) { return r.json(); }).then(function (d) {
+    Pipeline.lastLog = (d.log || JSON.stringify(d)).slice(-6000);
+  }).catch(function (e) {
+    Pipeline.lastLog = "引擎调用失败：" + e;
+  }).then(function () {
+    Pipeline.busy = false;
+    refreshPipeline();
+  });
+}
+
 /* ========= 统一刷新入口（单向调度，无渲染互调） ========= */
 function refreshAll() {
   renderStats();
@@ -646,6 +806,7 @@ function refreshAll() {
   document.querySelectorAll(".bn-btn").forEach(function (b) { b.classList.toggle("active", b.dataset.tab === UI.tab); });
   if (UI.tab === "knowledge") renderKnowledge();
   else if (UI.tab === "papers") renderPapers();
+  else if (UI.tab === "pipeline") { renderPipelineShell(); if (!Pipeline.loaded && engineLive()) refreshPipeline(); }
   else renderNotes();
   checkBanner();
 }
@@ -839,6 +1000,14 @@ document.getElementById("btnExport").addEventListener("click", exportJSON);
 document.getElementById("btnImport").addEventListener("click", function () { document.getElementById("fileIn").click(); });
 document.getElementById("fileIn").addEventListener("change", function () { if (this.files && this.files[0]) importJSON(this.files[0]); this.value = ""; });
 document.getElementById("btnClear").addEventListener("click", clearLocal);
+document.getElementById("pipeRefresh").addEventListener("click", refreshPipeline);
+function pipeRunClick(e) {
+  var b = e.target.closest("[data-pipe-run]");
+  if (!b) return;
+  pipeRun(b.dataset.pipeRun, b.dataset.pipeTarget);
+}
+document.getElementById("pipeRawList").addEventListener("click", pipeRunClick);
+document.getElementById("pipeDsList").addEventListener("click", pipeRunClick);
 document.getElementById("kmClose").addEventListener("click", closeK);
 document.getElementById("mask").addEventListener("click", function (e) { if (e.target.id === "mask") closeK(); });
 document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeK(); });
@@ -859,6 +1028,9 @@ function copyText(txt) {
 /* ========= 初始化 ========= */
 loadStore();
 refreshAll();
+if (engineLive()) refreshPipeline();
+var h0 = (location.hash || "").replace("#", "");
+if (["papers", "notes", "pipeline"].indexOf(h0) >= 0) setTab(h0);
 </script>
 </body>
 </html>
