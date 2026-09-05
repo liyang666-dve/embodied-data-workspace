@@ -198,6 +198,16 @@ a{color:var(--blue);text-decoration:none}
 .pill.off{background:var(--red-bg);color:#FFB3AE}.pill.off .dp{background:var(--red)}
 .pipe-hint{background:var(--amber-bg);border:1px solid rgba(245,181,68,.3);color:#FFE2A6;border-radius:11px;padding:10px 14px;margin-bottom:12px;font-size:13px}
 .pipe-hint code{background:rgba(245,181,68,.14);border-radius:5px;padding:1px 6px}
+.scanrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px dashed var(--line2);border-radius:11px;padding:11px 13px;margin-bottom:12px}
+.scanrow .srow{display:flex;gap:8px;flex:1 1 100%;align-items:center;flex-wrap:wrap}
+.scanrow input{flex:1 1 300px;min-width:200px;font-size:14px}
+.scanrow .tip{font-size:11.5px;color:var(--weak);flex:1 1 100%}
+.scan-dirs{display:flex;gap:6px;flex-wrap:wrap;flex:1 1 100%;margin-top:2px}
+.scan-chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel3);border:1px solid var(--line);color:var(--sub);border-radius:999px;padding:3px 10px;font-size:11.5px;max-width:100%}
+.scan-chip .p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:300px}
+.scan-chip .x{cursor:pointer;color:var(--weak);padding:0 2px;font-size:13px;line-height:1}
+.scan-chip .x:hover{color:var(--red)}
+.scan-chip.base{background:transparent;color:var(--weak);border-style:dashed}
 .sec-h{font-size:13px;color:var(--sub);display:flex;align-items:center;gap:8px;margin:16px 0 9px;font-weight:600;letter-spacing:.2px}
 .sec-h::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--blue)}
 .emptyline{border:1.5px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--weak);font-size:13px;background:transparent}
@@ -313,6 +323,14 @@ a{color:var(--blue);text-decoration:none}
           <button class="act" id="pipeRefresh"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 11-3-6.7"/><path d="M21 3v5h-5"/></svg></span>刷新</button>
         </div>
         <div id="pipeHint"></div>
+        <div class="scanrow" id="scanRow">
+          <div class="srow">
+            <input id="scanInput" placeholder="粘贴要扫描的目录路径（放原始源或标准数据集的父目录）…" spellcheck="false">
+            <button class="act acc" id="scanAdd"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>添加扫描目录</button>
+          </div>
+          <div class="scan-dirs" id="scanDirs"></div>
+          <div class="tip">提示：引擎按「默认目录 + 你添加的目录」逐层扫描子目录——识别标准数据集（meta/info.json）与原始源（带 config.json 的 UMI/Ego/仿真目录）。文件管理器里复制路径粘贴即可；路径需本机已存在。</div>
+        </div>
         <div class="dp-src" id="dpSrc"></div>
         <div class="sec-h">数据资产流水线</div>
         <div id="pipeList"></div>
@@ -561,7 +579,8 @@ function renderPipelineShell(){var live=engineLive(),st=$id("pdpStatus");
   html+='<div class="sec-h">标准数据集 · '+dss.length+"</div>";
   html+=dss.length?dss.map(pipeDsCard).join(""):'<div class="emptyline">暂无标准数据集——对原始源点「转为标准数据集」后出现在这里</div>';
   listEl.innerHTML=html;
-  $id("pipeLog").textContent=Pipeline.lastLog||"尚未执行操作";}
+  $id("pipeLog").textContent=Pipeline.lastLog||"尚未执行操作";
+  renderScanUI();}
 function pipeRawCard(i){return'<div class="pipe-card"><div class="ph"><span class="cat '+i.source_type+'">'+(i.source_type||"raw")+'</span><span class="pname">'+esc(i.name)+'</span><span style="margin-left:auto" class="acts" style="margin-top:0"><button class="act acc" data-pipe-run="ingest" data-pipe-target="'+esc(i.path)+'">转为标准数据集</button></span></div>'+
   '<div class="pm">'+(i.task?"任务 "+esc(i.task):"")+' · '+i.path+'</div></div>';}
 function pipeDsCard(i){var st=i.steps||{};
@@ -580,12 +599,34 @@ function pipeDsCard(i){var st=i.steps||{};
 function refreshPipeline(){if(!engineLive()){Pipeline.loaded=false;renderPipelineShell();return Promise.resolve();}
   Pipeline.busy=true;renderPipelineShell();
   return fetch("/api/batches").then(function(r){return r.json();}).then(function(d){Pipeline.items=(d&&d.items)||[];Pipeline.loaded=true;})
-    .catch(function(){Pipeline.items=[];Pipeline.loaded=false;}).then(function(){Pipeline.busy=false;renderPipelineShell();});}
+    .catch(function(){Pipeline.items=[];Pipeline.loaded=false;}).then(function(){Pipeline.busy=false;return refreshScans();}).then(function(){renderPipelineShell();});}
 function pipeRun(tool,target){if(Pipeline.busy||!engineLive())return;
   Pipeline.busy=true;Pipeline.lastLog="发起："+tool+" → "+target+"\n…";renderPipelineShell();
   return fetch("/api/run",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({tool:tool,target:target})})
     .then(function(r){return r.json();}).then(function(d){Pipeline.lastLog=(d.log||JSON.stringify(d)).slice(-6000);})
     .catch(function(e){Pipeline.lastLog="引擎调用失败："+e;}).then(function(){Pipeline.busy=false;refreshPipeline();});}
+
+/* ===== 扫描目录管理 ===== */
+var ScanDirs={list:[],base:[],loaded:false};
+function renderScanUI(){var el=$id("scanDirs");if(!el)return;
+  var base=ScanDirs.base||[],extra=ScanDirs.list||[];
+  var h=base.map(function(b){return'<span class="scan-chip base" title="默认扫描目录（config paths.batches）"><span class="p">'+esc(b)+"</span></span>";}).join("");
+  h+=extra.map(function(d){return'<span class="scan-chip"><span class="p">'+esc(d)+'</span><span class="x" data-scan-remove="'+esc(d)+'" title="移除">×</span></span>';}).join("");
+  if(!base.length&&!extra.length&&!engineLive())h='<span style="color:var(--weak);font-size:12px">连上引擎后这里会列出默认与自定义扫描目录</span>';
+  el.innerHTML=h;}
+function refreshScans(){if(!engineLive())return Promise.resolve();
+  return fetch("/api/scandirs").then(function(r){return r.json();}).then(function(d){
+    ScanDirs.list=(d&&d.dirs)||[];ScanDirs.base=(d&&d.base)||[];ScanDirs.loaded=true;renderScanUI();})
+    .catch(function(){ScanDirs.loaded=false;});}
+function addScanDir(){var v=$id("scanInput").value.trim();if(!v){toast("先粘贴一个目录路径");return;}
+  $id("scanAdd").disabled=true;
+  return fetch("/api/scandirs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({dir:v})})
+    .then(function(r){return r.json();}).then(function(d){$id("scanAdd").disabled=false;
+      if(d&&d.ok){toast("已添加扫描目录");$id("scanInput").value="";return refreshScans().then(refreshPipeline);}
+      toast((d&&d.error)||"添加失败（目录不存在？）");})
+    .catch(function(){ $id("scanAdd").disabled=false;toast("引擎调用失败");});}
+function delScanDir(dir){return fetch("/api/scandirs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({dir:dir,remove:true})})
+  .then(function(r){return r.json();}).then(function(d){if(d&&d.ok){toast("已移除");return refreshScans().then(refreshPipeline);}});}
 
 /* ===== 备份 / 快速捕获 ===== */
 function exportJSON(){var d={app:"embodied-data-desk",version:2,exportedAt:nowISO(),state:Store.state,notes:Store.notes};
@@ -687,6 +728,9 @@ document.getElementById("nList").addEventListener("click",function(e){
   if(e.target.closest(".nt,.nd,.nm")){UI.editNoteId=nid;renderNotes();}});
 document.getElementById("pipeRefresh").addEventListener("click",refreshPipeline);
 document.getElementById("pipeList").addEventListener("click",function(e){var b=e.target.closest("[data-pipe-run]");if(!b)return;pipeRun(b.dataset.pipeRun,b.dataset.pipeTarget);});
+document.getElementById("scanAdd").addEventListener("click",addScanDir);
+document.getElementById("scanInput").addEventListener("keydown",function(e){if(e.key==="Enter")addScanDir();});
+document.getElementById("scanDirs").addEventListener("click",function(e){var x=e.target.closest("[data-scan-remove]");if(!x)return;delScanDir(x.dataset.scanRemove);});
 
 /* ===== 启动 ===== */
 function boot(){loadStore();refreshAll();if(engineLive())refreshPipeline();
