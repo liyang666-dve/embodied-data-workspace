@@ -99,6 +99,9 @@ button.mini{padding:3px 9px;font-size:12px}
 .rep-cams button{margin-right:6px;margin-bottom:6px}
 .camsel{background:#1d4ed8}
 .camsrc{font-size:11px;color:#7b8694}
+.frmgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:6px;margin-top:8px}
+.frmgrid img{width:100%;border-radius:5px;border:1px solid #e3e8ee;cursor:pointer}
+.frmbar{display:flex;align-items:center;gap:8px;margin:8px 0 2px;flex-wrap:wrap}
 .dtabs{display:flex;gap:4px;margin-bottom:12px}
 .dtab{padding:5px 16px;border-radius:7px;font-size:13px;cursor:pointer;background:#eef1f5;color:#52606d;border:0}
 .dtab.on{background:#2563eb;color:#fff}
@@ -155,6 +158,13 @@ button.mini{padding:3px 9px;font-size:12px}
           <div class="rep-cams" id="rpCams"></div>
           <div class="hint" id="rpVerdict" style="margin-bottom:8px;min-height:38px;white-space:pre-wrap">点左侧某一集开始播放。</div>
           <div class="rep-video"><video id="rpPlayer" controls muted playsinline></video></div>
+          <div class="frmbar" id="rpFrmBar" style="display:none">
+            <button class="ghost mini" id="rpFramesBtn">⛶ 抽帧预览</button>
+            <span class="muted small" id="rpFrmInfo"></span>
+            <span style="flex:1"></span>
+            <button class="ghost mini" id="rpFrmClose" style="display:none">收起</button>
+          </div>
+          <div class="frmgrid" id="rpFrames" style="display:none"></div>
           <div class="muted small" id="rpVpInfo" style="margin-top:6px"></div>
         </div>
       </div>
@@ -395,11 +405,36 @@ function rpRenderCams(){var v=$id("rpVerdict");if(!v)return;
   v.innerHTML=t;}
 function rpLoadVideo(){var p=$id("rpPlayer");if(!p)return;
   var url=Engine.url+"/api/review/video?"+qs({path:RP.path,ep:RP.ep,cam:RP.cam});
+  var bar=$id("rpFrmBar"),b=$id("rpFrames"),fbtn=$id("rpFramesBtn"),finfo=$id("rpFrmInfo");
+  if(bar)bar.style.display="none";if(b)b.style.display="none";
   p.src=url;
   var info=$id("rpVpInfo");
   if(info)info.textContent=RP.cam.replace("observation.images.","")+" · ep"+RP.ep;
-  p.onloadedmetadata=function(){p.play().catch(function(){});};
-  p.onerror=function(){if(info)info.textContent="视频加载失败（可尝试用 Edge/Chrome 打开，或检查文件是否被移动）";};}
+  p.onloadedmetadata=function(){if(info)info.textContent=RP.cam.replace("observation.images.","")+" · ep"+RP.ep;
+    p.play().catch(function(){});};
+  p.onerror=function(){
+    if(info)info.textContent="该视频编码（MPEG-4）当前浏览器不支持直接播放——真实采集视频（H.264）无此问题。已为你准备好抽帧预览：";
+    if(bar)bar.style.display="flex";
+    if(fbtn)fbtn.style.display="inline-block";
+    if(finfo)finfo.textContent="约 30-60 张 / 间隔自动";
+    rpShowFrames();};}
+function rpShowFrames(){var grid=$id("rpFrames"),bar=$id("rpFrmBar"),finfo=$id("rpFrmInfo"),closeb=$id("rpFrmClose");
+  if(!grid)return;
+  if(grid.style.display!=="none"){return;}
+  grid.style.display="grid";grid.innerHTML="<span class=\"muted small\" style=\"grid-column:1/-1\">抽帧中…</span>";
+  if(bar)bar.style.display="flex";if(closeb)closeb.style.display="inline-block";
+  apiGet("/api/review/frames?"+qs({path:RP.path,ep:RP.ep,cam:RP.cam}),function(d){
+    if(!d||!d.ok){grid.innerHTML='<span class="muted small" style="grid-column:1/-1">抽帧失败：'+esc((d&&d.error)||"未知错误")+"</span>";return;}
+    var imgs=[];
+    for(var i=0;i<d.count;i++)imgs.push(i);
+    grid.innerHTML=imgs.map(function(i){
+      var src=Engine.url+"/api/review/frameimg?"+qs({cache:d.token,i:i});
+      return '<img loading="lazy" src="'+src+'" title="第 '+i+' 帧" onclick="window.open(this.src)">';}).join("");
+    if(finfo)finfo.textContent=d.count+" 张（每 "+d.step+" 帧抽 1，全 "+d.total+" 帧）";
+  });}
+function rpHideFrames(){var grid=$id("rpFrames"),closeb=$id("rpFrmClose");
+  if(grid)grid.style.display="none";
+  if(closeb)closeb.style.display="none";}
 
 /* ============ 总览 + 详情 ============ */
 function renderOverview(param){
@@ -637,6 +672,8 @@ function boot(){try{
   window.addEventListener("hashchange",route);
   $id("btnScan").addEventListener("click",openScanDir);
   $id("btnBak").addEventListener("click",doBackup);
+  var fbtn=$id("rpFramesBtn");if(fbtn)fbtn.addEventListener("click",rpShowFrames);
+  var fcb=$id("rpFrmClose");if(fcb)fcb.addEventListener("click",rpHideFrames);
   bindActEvents();bindLedgerEvents();bindKbEvents();bindAiEvents();
 }catch(e){errbar("启动异常："+e.message);console.error(e);}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
