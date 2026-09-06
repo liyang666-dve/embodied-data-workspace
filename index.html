@@ -93,6 +93,12 @@ button.mini{padding:3px 9px;font-size:12px}
 .ktag{display:inline-block;font-size:11px;background:#eef1f5;color:#445;border-radius:4px;padding:0 6px;margin:3px 4px 0 0}
 .flowcol{display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start}
 @media(max-width:1000px){.flowcol{grid-template-columns:1fr}}
+.flowcol3{display:grid;grid-template-columns:1fr 300px 1.4fr;gap:14px;align-items:start}
+@media(max-width:1100px){.flowcol3{grid-template-columns:1fr}}
+.rep-video video{width:100%;background:#000;border-radius:8px;max-height:480px}
+.rep-cams button{margin-right:6px;margin-bottom:6px}
+.camsel{background:#1d4ed8}
+.camsrc{font-size:11px;color:#7b8694}
 .dtabs{display:flex;gap:4px;margin-bottom:12px}
 .dtab{padding:5px 16px;border-radius:7px;font-size:13px;cursor:pointer;background:#eef1f5;color:#52606d;border:0}
 .dtab.on{background:#2563eb;color:#fff}
@@ -110,6 +116,7 @@ button.mini{padding:3px 9px;font-size:12px}
   <div class="brand"><span class="lg">数</span>数据工作台</div>
   <div class="grp">数据处理</div>
   <a href="#/overview" data-page="overview"><span class="dot" id="d_engine"></span>总览</a>
+  <a href="#/replay" data-page="replay">视频复核</a>
   <a href="#/action" data-page="action">一键动作</a>
   <a href="#/ledger" data-page="ledger">台账</a>
   <div class="grp">知识</div>
@@ -130,6 +137,27 @@ button.mini{padding:3px 9px;font-size:12px}
 
     <section class="page" id="page-overview">
       <div id="ovWrap"></div>
+    </section>
+
+    <section class="page" id="page-replay">
+      <div class="flowcol3">
+        <div class="card" style="margin-bottom:0">
+          <div class="toolbar"><h2 style="margin:0">① 数据集</h2><button class="ghost" onclick="renderReplay()">刷新</button></div>
+          <div id="rpSources" style="max-height:64vh;overflow:auto"></div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <h2>② Episode</h2>
+          <div id="rpEpInfo" class="muted small" style="margin-bottom:6px">先选左侧数据集</div>
+          <div id="rpEps" style="max-height:60vh;overflow:auto"></div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <h2>③ 采集视频</h2>
+          <div class="rep-cams" id="rpCams"></div>
+          <div class="hint" id="rpVerdict" style="margin-bottom:8px;min-height:38px;white-space:pre-wrap">点左侧某一集开始播放。</div>
+          <div class="rep-video"><video id="rpPlayer" controls muted playsinline></video></div>
+          <div class="muted small" id="rpVpInfo" style="margin-top:6px"></div>
+        </div>
+      </div>
     </section>
 
     <section class="page" id="page-action">
@@ -273,19 +301,20 @@ function loadAssets(cb){apiGet("/api/batches",function(d){Engine.items=(d&&d.ite
 function runTool(tool,targets,cb){ /* 见 pages */ }
 
 /* ============ 页面路由（占位，由 pages.js 注入） ============ */
-var VALID_PAGES=["overview","action","ledger","kb","ai"];
+var VALID_PAGES=["overview","replay","action","ledger","kb","ai"];
 function route(){var h=(location.hash||"#/overview").replace(/^#\/?/,"");var pg=h.split("/")[0];var param=decodeURIComponent(h.split("/").slice(1).join("/")||"");
   if(VALID_PAGES.indexOf(pg)<0)pg="overview";
   Store.page=pg;renderNav(pg);
   document.querySelectorAll(".page").forEach(function(s){s.classList.remove("on");});
   var el=$id("page-"+pg);if(el)el.classList.add("on");
   if(pg==="overview")renderOverview(param);
+  else if(pg==="replay")renderReplay();
   else if(pg==="action")renderAction();
   else if(pg==="ledger")renderLedger();
   else if(pg==="kb")renderKb();
   else if(pg==="ai")renderAi();}
 function renderNav(pg){document.querySelectorAll(".nav a[data-page]").forEach(function(a){a.classList.toggle("active",a.dataset.page===pg);});
-  var T={overview:["总览","数据资产与质量一览"],action:["一键动作","勾选数据、执行处理链"],ledger:["台账","已登记批次"],kb:["资料库","知识 / 论文 / 笔记"],ai:["AI 助手","可插拔大脑"]}[pg]||["",""];
+  var T={overview:["总览","数据资产与质量一览"],replay:["视频复核","逐集看视频 · 按质检提示处理"],action:["一键动作","勾选数据、执行处理链"],ledger:["台账","已登记批次"],kb:["资料库","知识 / 论文 / 笔记"],ai:["AI 助手","可插拔大脑"]}[pg]||["",""];
   var h=$id("pgTitle"),s=$id("pgSub");if(h)h.textContent=T[0];if(s)s.textContent=T[1];}
 /* ============ 通用渲染 ============ */
 function pName(p){return (p||"").split(/[\\\/]/).filter(Boolean).pop()||"";}
@@ -316,6 +345,61 @@ function openScanDir(){if(egOK()){
 function doBackup(){var blob=new Blob([JSON.stringify({state:Store.state,notes:Store.notes,K:K,P:P,ts:Date.now()},null,1)],{type:"application/json"});
   var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="desk-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();
   errbar("已导出备份（阅读状态/笔记/数据快照）",true);}
+
+/* ============ 视频复核 ============ */
+var RP={path:"",meta:null,ep:null,cam:""};
+function verdictChipV(v){if(v==="keep")return '<span class="chip ok">✓ 保留</span>';
+  if(v==="exclude")return '<span class="chip bad">✗ 排除</span>';
+  return '<span class="chip mut">未质检</span>';}
+function rpVerText(v){return v==="keep"?"质检 ✓ 保留":v==="exclude"?"质检 ✗ 排除":"未质检";}
+function renderReplay(){var pre=window._rp;window._rp=null;
+  if(pre&&pre.path)RP.path=pre.path;
+  var box=$id("rpSources");if(!box)return;
+  if(!egOK()){box.innerHTML='<div class="hint">引擎离线——双击 innov-dataprep\\start_desk.bat 启动后可逐集看视频。</div>';return;}
+  var dss=Engine.items.filter(function(x){return x.kind==="dataset";});
+  if(!dss.length){box.innerHTML='<div class="muted small">还没有数据集。先 INGEST 转换或添加扫描目录。</div>';return;}
+  box.innerHTML="<table><thead><tr><th></th><th>名称</th><th>集数</th></tr></thead><tbody>"+
+    dss.map(function(d){return '<tr class="row-link" data-rps="'+esc(d.path)+'"><td><input type="radio" name="rpsrc"'+(RP.path===d.path?" checked":"")+'></td><td>'+esc(d.name)+'</td><td class="num">'+(d.episodes!=null?d.episodes:"-")+"</td></tr>";}).join("")+"</tbody></table>";
+  box.querySelectorAll("tr[data-rps]").forEach(function(tr){tr.addEventListener("click",function(){tr.querySelector("input").checked=true;rpPick(tr.dataset.rps);});});
+  if(RP.path&&!RP.meta)rpPick(RP.path);
+  else if(RP.path&&RP.meta)rpRenderEps(true);}
+function rpPick(path){RP.path=path;RP.meta=null;RP.ep=null;
+  var info=$id("rpEpInfo");if(info)info.textContent="加载中…";
+  apiGet("/api/review/episodes?"+qs({path:RP.path}),function(d){
+    if(!d||!d.ok){if(info)info.textContent=(d&&d.error)||"加载失败";return;}
+    RP.meta=d;
+    if(info)info.textContent=d.name+" · "+d.episodes.length+" 集";
+    rpRenderEps(false);
+    var first=d.episodes&&d.episodes[0];
+    if(first){RP.ep=first.episode;rpSelectEp(first);}});
+}
+function rpRenderEps(fromState){var el=$id("rpEps");if(!el)return;
+  var d=RP.meta;if(!d){el.innerHTML='<div class="muted small">先选左侧数据集</div>';return;}
+  el.innerHTML="<table><thead><tr><th>集</th><th>结论</th><th>原因</th></tr></thead><tbody>"+
+    d.episodes.map(function(e){
+      var why=e.reasons?esc(e.reasons.slice(0,60)):"-";
+      return '<tr class="row-link" data-ep="'+e.episode+'" style="'+(RP.ep===e.episode?"background:#eef6ff":"")+'"><td class="num">ep'+e.episode+'</td><td>'+verdictChipV(e.verdict)+"</td><td class=\"small muted\" style=\"white-space:normal;max-width:200px\">"+why+"</td></tr>";}).join("")+"</tbody></table>";
+  el.querySelectorAll("tr[data-ep]").forEach(function(tr){tr.addEventListener("click",function(){var ep=+tr.dataset.ep;
+    el.querySelectorAll("tr").forEach(function(x){x.style.background="";});tr.style.background="#eef6ff";
+    var e=RP.meta.episodes.find(function(z){return z.episode===ep;});if(e)rpSelectEp(e);});});}
+function rpSelectEp(e){RP.ep=e.episode;
+  var cams=e.cameras&&e.cameras.length?e.cameras:RP.meta.cameras||[];
+  if(cams.indexOf(RP.cam)<0)RP.cam=cams[0]||"";
+  var cb=$id("rpCams");if(cb)cb.innerHTML=cams.map(function(c){return '<button class="'+(c===RP.cam?"camsel":"sec")+'" data-cam="'+esc(c)+'">'+esc(c.replace("observation.images.",""))+"</button>";}).join("");
+  cb.querySelectorAll("[data-cam]").forEach(function(b){b.addEventListener("click",function(){RP.cam=b.dataset.cam;rpRenderCams();rpLoadVideo();});});
+  rpRenderCams();
+  rpLoadVideo();}
+function rpRenderCams(){var v=$id("rpVerdict");if(!v)return;
+  var e=RP.meta.episodes.find(function(z){return z.episode===RP.ep;});
+  var t="ep"+RP.ep+" · "+rpVerText(e?e.verdict:"none")+(e&&e.reasons?"\n原因："+esc(e.reasons):"");
+  v.innerHTML=t;}
+function rpLoadVideo(){var p=$id("rpPlayer");if(!p)return;
+  var url=Engine.url+"/api/review/video?"+qs({path:RP.path,ep:RP.ep,cam:RP.cam});
+  p.src=url;
+  var info=$id("rpVpInfo");
+  if(info)info.textContent=RP.cam.replace("observation.images.","")+" · ep"+RP.ep;
+  p.onloadedmetadata=function(){p.play().catch(function(){});};
+  p.onerror=function(){if(info)info.textContent="视频加载失败（可尝试用 Edge/Chrome 打开，或检查文件是否被移动）";};}
 
 /* ============ 总览 + 详情 ============ */
 function renderOverview(param){
@@ -366,12 +450,14 @@ function renderDetail(path){
   h+='</div>';
   h+='<div class="actionsrow">';
   if(it.kind==="raw"){h+='<button data-tool="ingest">转为标准集 (INGEST)</button>';}
-  else{["inspect","clean","verify","dehand","pack","record"].forEach(function(t){h+='<button class="sec" data-tool="'+t+'">'+TOOL_LABEL[t]+'</button>';});}
+  else{["inspect","clean","verify","dehand","pack","record"].forEach(function(t){h+='<button class="sec" data-tool="'+t+'">'+TOOL_LABEL[t]+'</button>';});
+    h+='<button class="ghost" data-rp="1">▶ 看视频复核</button>';}
   h+='</div>';
   h+='<div class="banner" id="detBanner" style="display:none"></div><div class="log" id="detLog" style="display:none"></div>';
   if(it.kind==="dataset"){h+='<div class="card" id="detQc" style="display:none"><h2>清洗明细与人话解读</h2><div id="detQcBody">加载中…</div></div>';}
   w.innerHTML=h;
   w.querySelectorAll("button[data-tool]").forEach(function(b){b.addEventListener("click",function(){runTool(b.dataset.tool,[path],function(logs){if(it.kind==="dataset")fillQc(path);});});});
+  w.querySelectorAll("[data-rp]").forEach(function(b){b.addEventListener("click",function(){window._rp={path:path};location.hash="#/replay";});});
   if(it.kind==="dataset")fillQc(path);
 }
 function fillQc(path){var box=$id("detQc");var body=$id("detQcBody");if(!box||!body)return;
@@ -433,13 +519,13 @@ function afterRunQc(){var ds=pickItems().filter(function(x){return x.kind==="dat
       d.items.forEach(function(it){h+='<div class="small" style="margin:4px 0"><b>ep'+esc(it.ep)+"</b>："+esc(it.reasons.join("；"))+"</div>";});
       h+='<div class="hint" style="margin-top:6px">建议：'+esc(d.advice_all)+"</div>";}
     qc.innerHTML=h;});}
-function appBanner(ok,txt){var b=$id("actBanner");if(!b)return;b.style.display="block";
+function appBanner(ok,txt){var b=$id("actBanner")||$id("detBanner");if(!b)return;b.style.display="block";
   b.className="banner "+(ok?"ok":"fail");
   b.textContent=(b.textContent?b.textContent+"\n":"")+txt;}
-function appLog(txt){var l=$id("actLog");if(!l)return;l.style.display="block";
+function appLog(txt){var l=$id("actLog")||$id("detLog");if(!l)return;l.style.display="block";
   l.textContent=(l.textContent?l.textContent+"\n":"")+txt;l.scrollTop=l.scrollHeight;}
 function runTool(tool,targets,cb){var i=0;var used=targets.filter(function(t){return Engine.items.find(function(x){return x.path===t&&toolAvail(tool,x.kind);});});
-  appLog("");var b=$id("actBanner");if(b){b.style.display="none";b.textContent="";}
+  appLog("");["actBanner","detBanner"].forEach(function(bid){var b=$id(bid);if(b){b.style.display="none";b.textContent="";}});
   if(!used.length){errbar("所选数据不支持该动作（"+(TOOL_LABEL[tool]||tool)+"）");return;}
   (function next(){if(i>=used.length){cb&&cb();return;}
     var t=used[i++],nm=pName(t);
