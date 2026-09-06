@@ -61,5 +61,95 @@ window.WB_P = [
     category: "collection",
     tags: ["大规模", "遥操作", "成功率清洗"],
     summary: "分布式遥操作数据集：约 7.6 万 episode、564 场景、86 任务，配套成功率预测器做数据清洗，展示大规模真实数据管线该怎么搭。"
+  },
+  {
+    id: "2609.03591", title: "Scaling Bimanual Household Manipulation from 1,500 hours of Demonstrations to On-Policy Corrections",
+    authors: "Xu et al.",
+    url: "https://arxiv.org/abs/2609.03591",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "collection",
+    tags: ["双臂家务", "大规模数据集", "on-policy修正", "数据闭环"],
+    summary: "发布 1500 小时双臂家务演示数据，再用真机 on-policy 纠错做微调，把『采集—部署—修正』串成闭环的大规模实操，双臂泛化瓶颈的正面回答。"
+  },
+  {
+    id: "2609.03927", title: "Toward Unified Robot Learning: Bridging Representation, Vision-Language-Action, and World Models",
+    authors: "Mehta et al.",
+    url: "https://arxiv.org/abs/2609.03927",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "model",
+    tags: ["VLA", "世界模型", "表征学习", "综述"],
+    summary: "综述表示学习、VLA 与世界模型三条路线如何走向统一机器人学习，梳理把感知—动作—后果预测整合进单一模型的趋势、分歧与待解问题。"
+  },
+  {
+    id: "2609.03557", title: "Building Pretraining Data for World Models: An Unreal Engine-Based Pipeline for Action-Conditioned Video Generation",
+    authors: "Wang et al.",
+    url: "https://arxiv.org/abs/2609.03557",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "processing",
+    tags: ["仿真数据", "世界模型", "Unreal Engine", "视频生成"],
+    summary: "用 Unreal Engine 搭合成数据管线，批量产出动作条件视频，给世界模型预训练补上真实世界难以成对标注『动作—画面变化』的训练数据。"
+  },
+  {
+    id: "2609.04193", title: "GIFT: Guided Intermediate Feature Training via Action-Oriented Structural Supervision for Robotic Manipulation",
+    authors: "Zheng et al.",
+    url: "https://arxiv.org/abs/2609.04193",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "model",
+    tags: ["VLA", "特征训练", "结构监督", "操作策略"],
+    summary: "指出预训练视觉/世界模型特征夹带大量与控制无关的冗余，用动作导向结构监督引导中间特征训练，让操作策略学得更准、更省数据。"
+  },
+  {
+    id: "2609.03715", title: "MINERVA: How Small Can a Manipulation Policy Be and Still Solve LIBERO?",
+    authors: "Sendai, Matsushima & Iwasawa",
+    url: "https://arxiv.org/abs/2609.03715",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "model",
+    tags: ["VLA", "轻量化", "LIBERO", "容量下限"],
+    summary: "追问操作策略到底需要多大模型：在 LIBERO 上用刻意紧凑的 visuomotor 策略逼近大 VLA 成绩，给训练部署成本与蒸馏提供下限参考。"
+  },
+  {
+    id: "2609.03276", title: "R2S-Eval: Robot Evaluation with Real-to-Sim Calibration via Vision-Language Models",
+    authors: "Wang et al.",
+    url: "https://arxiv.org/abs/2609.03276",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-03", added_at: "2026-09-06",
+    category: "processing",
+    tags: ["策略评测", "sim2real", "VLM校准", "数据质控"],
+    summary: "用 VLM 做 real-to-sim 校准，把繁琐的真机评测搬进仿真、自动补拍差异，让策略评估更省人力更可复现，补上数据闭环的质控环节。"
+  },
+  {
+    id: "2026_09_05_830069", title: "机器人链条上，数采赛道正热闹",
+    authors: "观察者网",
+    url: "https://www.guancha.cn/economy/2026_09_05_830069.shtml",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-05", added_at: "2026-09-06",
+    category: "collection",
+    tags: ["数据采集产业", "数据工厂", "真机采集", "无本体采集"],
+    summary: "梳理数采五路大军格局：智元真机数据工厂、觅蜂无本体采集、宇树 G1-D 全栈、京东千万小时中心——谁能把高质量数据成本打下来谁握话语权。"
+  },
+  {
+    id: "20260906A00AAH00", title: "Google 开发者大会观察：具身智能下半场，开源人体数据建标准",
+    authors: "腾讯新闻",
+    url: "https://new.qq.com/rain/a/20260906A00AAH00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-06", added_at: "2026-09-06",
+    category: "format",
+    tags: ["人体运动数据", "HiPHI", "跨机型复用", "数据标准"],
+    summary: "诺亦腾开源 617.5 小时高精度人体运动数据集 HiPHI，为动作建结构化语言：人类数据不随机器人硬件迭代作废、可跨机型复用，走『开源建标杆』路线。"
+  },
+  {
+    id: "70000021_3066a9b299c36652", title: "具身智能技术路线「暗战」",
+    authors: "腾讯新闻（WRC 2026 报道）",
+    url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_3066a9b299c36652",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-06", added_at: "2026-09-06",
+    category: "model",
+    tags: ["NeuroVLA", "世界模型", "类脑架构", "技术路线"],
+    summary: "WRC 2026 技术路线观察：类脑 NeuroVLA、统一表征 Pelican-Unify、自进化 L4E/E4L 同台竞争，行业共识从『谁是大脑终极路线』转向如何增强系统化能力。"
   }
 ];
