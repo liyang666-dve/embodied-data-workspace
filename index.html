@@ -273,9 +273,9 @@ function loadAssets(cb){apiGet("/api/batches",function(d){Engine.items=(d&&d.ite
 function runTool(tool,targets,cb){ /* 见 pages */ }
 
 /* ============ 页面路由（占位，由 pages.js 注入） ============ */
-var PAGES={};
+var VALID_PAGES=["overview","action","ledger","kb","ai"];
 function route(){var h=(location.hash||"#/overview").replace(/^#\/?/,"");var pg=h.split("/")[0];var param=decodeURIComponent(h.split("/").slice(1).join("/")||"");
-  if(!PAGES[pg])pg="overview";
+  if(VALID_PAGES.indexOf(pg)<0)pg="overview";
   Store.page=pg;renderNav(pg);
   document.querySelectorAll(".page").forEach(function(s){s.classList.remove("on");});
   var el=$id("page-"+pg);if(el)el.classList.add("on");
