@@ -737,7 +737,20 @@ function bindEvents(){
   document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$id("searchInp").focus();return;}
     if(!e.isComposing&&Store.view==="chat"&&document.activeElement!==$id("cmdInp")&&document.activeElement!==$id("searchInp")&&e.key&&e.key.length===1){$id("cmdInp").focus();}});
   $id("btnTreeRefresh").addEventListener("click",function(){loadAssets();addMsg({who:"a",text:"已请求刷新资产列表。"});});
-  $id("btnAddDir").addEventListener("click",function(){var sl=$id("scanLine");if(sl)sl.style.display=sl.style.display==="none"?"flex":"none";if(sl&&sl.style.display==="flex")$id("scanInp").focus();});
+  $id("btnAddDir").addEventListener("click",function(){
+    if(engineOK()){
+      var sl=$id("scanLine");if(sl)sl.style.display="none";
+      fetch(Engine.url+"/api/pickdir").then(function(r){return r.json();}).then(function(d){
+        if(d&&d.ok&&d.path){apiPost("/api/scandirs",{dir:d.path},function(r2){
+          if(r2&&r2.ok){loadAssets();addMsg({who:"a",text:"已添加扫描目录："+d.path+"\n资产列表已刷新，左侧能看到新内容。"});}
+          else{errbarShow((r2&&r2.error)||"添加失败");}});}
+        else if(d&&d.cancelled){}
+        else{errbarShow((d&&d.error)||"无法打开选择框");}})
+       .catch(function(){errbarShow("调用引擎失败（引擎可能已停）");});
+    }else{
+      var sl=$id("scanLine");if(sl)sl.style.display=sl.style.display==="none"?"flex":"none";
+      if(sl&&sl.style.display==="flex")$id("scanInp").focus();}
+  });
   $id("scanOk").addEventListener("click",addScanDir);
   $id("scanInp").addEventListener("keydown",function(e){if(e.key==="Enter")addScanDir();});
   $id("btnData").addEventListener("click",function(){setView("data");});
