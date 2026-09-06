@@ -169,6 +169,10 @@ input,select{font:inherit;color:inherit}
 .qrow{display:flex;align-items:center;gap:8px;font-size:12.3px;padding:6px 9px;border-radius:8px;background:var(--bg3);margin-top:6px}
 .qrow .v{font-weight:500}
 .qrow.ok .v{color:var(--green)} .qrow.warn .v{color:var(--amber)} .qrow.bad .v{color:var(--red)}
+.qchuman{margin-top:7px;background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--tx2)}
+.qchuman .qc-ep{color:var(--tx);font-weight:500}
+.qchuman .qc-r{color:var(--red)}
+.qchuman .qc-a{color:var(--amber);display:block;margin:2px 0 6px}
 .pacts{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
 .detempty{padding:20px 8px;color:var(--tx3);font-size:12.5px;line-height:1.8}
 .detempty .qh{color:var(--tx2);font-weight:500;margin:12px 0 6px}
@@ -287,6 +291,10 @@ input,select{font:inherit;color:inherit}
         <option value="openai">云端 OpenAI 兼容 API（DeepSeek/Qwen/GLM…）</option>
       </select>
     </div>
+    <div style="display:flex;gap:6px;margin:-4px 0 12px">
+      <button class="act" id="aiFillOllama" style="padding:3px 10px;font-size:12px">填入 Ollama 推荐值</button>
+      <button class="act" id="aiFillDS" style="padding:3px 10px;font-size:12px">填入 DeepSeek 推荐值</button>
+    </div>
     <div class="frow"><label>接口地址</label><input id="aiBase" placeholder="http://127.0.0.1:11434/v1 或 https://api.deepseek.com/v1">
       <span class="hint">Ollama 与多数国产平台都提供 OpenAI 兼容 /v1/chat/completions</span></div>
     <div class="frow"><label>模型名</label><input id="aiModel" placeholder="如 qwen2.5:14b / deepseek-chat"></div>
@@ -370,7 +378,31 @@ function runTool(tool,target,onDone){addLogMsg("执行 "+tool+" → "+(target||"
     var ok=!!(d&&d.ok),log=(d&&d.log)||"无返回";
     appendRunResult(tool,target,ok,log);
     setTimeout(function(){loadAssets();},600);
+    if(ok)toolDone(tool,target);
     if(onDone)onDone(ok,log);});}
+
+/* 工具成功后的"人话收尾"（无 AI 也成立：规则总结；报告解读走 qcmsg） */
+function qcGet(target,cb){if(!engineOK()){cb(null);return;}
+  fetch(Engine.url+"/api/qcmsg?target="+encodeURIComponent(target),{cache:"no-store"})
+    .then(function(r){return r.json();}).then(cb).catch(function(){cb(null);});}
+function summarizeClean(target){
+  qcGet(target,function(d){
+    if(!d||!d.ok)return;
+    if(!d.n_excluded){addMsg({who:"a",text:"清洗(03)完成："+d.n_total+" 集全部通过（0 排除）。可继续：校验(07) → 打包(08) → 登记台账。"});return;}
+    var lines=["清洗(03)完成：有 "+d.n_excluded+" 集被标记排除——"];
+    d.items.forEach(function(it){lines.push("· ep"+it.ep+"："+it.reasons.join("；"));});
+    lines.push("");lines.push("建议："+d.advice_all);
+    lines.push("（05 合并时这些集会被自动剔除；想复核细节看右侧面板）");
+    addMsg({who:"a",text:lines.join("\n")});});}
+function toolDone(tool,target){
+  var nm=(target||"").split(/[\\\/]/).pop();
+  if(tool==="clean"){summarizeClean(target);}
+  else if(tool==="dehand"){addMsg({who:"a",text:"去手(10)完成 → 输出 "+nm+"_nohand 副本（无手帧原样拷贝不重编码，有手帧已盖板）。刷新左侧「标准数据集」查看。"});}
+  else if(tool==="ingest"){addMsg({who:"a",text:"INGEST 转换完成 ✓ 刷新左侧「标准数据集」会出现新集，可继续清洗/校验/打包。"});}
+  else if(tool==="verify"){addMsg({who:"a",text:"校验(07)通过 ✓ "+(nm)+" 结构完整、帧数一致，可以打包或登记了。"});}
+  else if(tool==="pack"){addMsg({who:"a",text:"打包(08)完成 ✓ 交付 tar.gz + sha256 清单已生成，可送训练机。"});}
+  else if(tool==="record"){addMsg({who:"a",text:"已登记台账 ✓ 该批次进入 data_catalog。"});}
+  else if(tool==="inspect"){addMsg({who:"a",text:"盘点(01)完成 ✓ 每集统计与视频对齐信息已生成。"});}}
 
 /* ================= 资产树 ================= */
 var SRC_LABEL={umi:["UMI 手持",2],ego:["Ego 穿戴",1],sim:["仿真",3],teleop:["遥操作",0]};
@@ -450,9 +482,8 @@ function setDetail(path){var p=$id("detPane");if(!p)return;
     h+="<div class=\"plab\"><span>处理进度 "+dones+"/4</span></div><div class=\"pipebar\">";
     PipeSteps.forEach(function(s){var on=ss[s[0]];h+="<span class=\"seg"+(on?" on":"")+"\" title=\""+s[1]+"\"></span>";});
     h+="</div>";
-    if(q.excluded!=null)h+="<div class=\"qrow "+(q.excluded>0?"bad":"ok")+"\"><span class=\"v\">"+(q.excluded>0?"清洗排除 "+q.excluded+" 集（05 合并时会剔除）":"清洗通过 0 排除")+"</span></div>";
+    if(q.excluded!=null)h+="<div class=\"qrow "+(q.excluded>0?"bad":"ok")+"\"><span class=\"v\">"+(q.excluded>0?"清洗排除 "+q.excluded+" 集（05 合并时自动剔除）":"清洗通过 0 排除")+"</span></div>"+(q.excluded>0?"<div class=\"qchuman\" data-qc=\""+esc(it.path)+"\">加载解读…</div>":"");
     if(q.warnings!=null)h+="<div class=\"qrow "+(q.warnings>0?"warn":"ok")+"\"><span class=\"v\">"+esc("校验 "+(q.warnings>0?q.warnings+" 条警告":"通过 0 警告"))+"</span></div>";
-    else if(ss.verify)h+="<div class=\"qrow warn\"><span class=\"v\">校验报告已生成</span></div>";
     h+="<div class=\"pacts\">"+detActs(it)+"</div>";
   }else{h+="<div class=\"qrow\"><span class=\"v\" style=\"color:var(--tx2)\">原始数据：INGEST 转换后即可进入清洗/校验/打包链</span></div>";
     h+="<div class=\"pacts\">"+detActs(it)+"</div>";}
@@ -462,7 +493,17 @@ function setDetail(path){var p=$id("detPane");if(!p)return;
   if(it.kind==="dataset")h+="<span class=\"qchip\" onclick=\"quickAsk('dehand','"+esc(it.name)+"')\">去手</span>";
   p.innerHTML=h;
   p.querySelectorAll(".act[data-tool]").forEach(function(b){b.addEventListener("click",function(){runTool(b.dataset.tool,b.dataset.target);});});
+  var qcEl=p.querySelector(".qchuman");if(qcEl)fillQcHuman(qcEl.dataset.qc,qcEl);
 }
+function fillQcHuman(target,el){
+  qcGet(target,function(d){
+    if(!el||!el.isConnected)return;
+    if(!d||!d.ok){el.innerHTML="<span style=\"color:var(--tx3)\">解读不可用</span>";return;}
+    if(!d.n_excluded){el.innerHTML="<span style=\"color:var(--tx2)\">✓ "+d.n_total+" 集全部通过</span>";return;}
+    var h="<div style=\"color:var(--amber);margin-bottom:4px\">清洗排除明细（原因与建议）：</div>";
+    d.items.forEach(function(it){h+="<span class=\"qc-ep\">ep"+esc(it.ep)+"</span>：<span class=\"qc-r\">"+esc(it.reasons.join("；"))+"</span>";
+      (it.advice||[]).forEach(function(a){h+="<span class=\"qc-a\">→ "+esc(a)+"</span>";});});
+    el.innerHTML=h;});}
 function quickAsk(kind,extra){var map={quality:"这批数据质量如何，帮我看看有哪些问题",dehand:"把视频里的人手去掉（去手处理）",pick:"帮我看下 "+extra,umidata:"UMI 手持数据是怎么转成机械臂能用的标准集的？"};cmdSend(map[kind]||"帮我看看数据情况");}
 
 /* ================= 扫描目录 ================= */
@@ -705,6 +746,12 @@ function bindEvents(){
   $id("dvTabs").addEventListener("click",function(e){var b=e.target.closest(".dtab");if(b)switchDv(b.dataset.dv);});
   $id("btnAi").addEventListener("click",openAiDlg);
   $id("aiCancel").addEventListener("click",closeAiDlg);
+  $id("aiFillOllama").addEventListener("click",function(){$id("aiMode").value="ollama";
+    $id("aiBase").value="http://127.0.0.1:11434/v1";$id("aiModel").value="qwen2.5:14b";$id("aiKey").value="";
+    errbarShow("已填入 Ollama 推荐值（公司机先跑 tools/setup_ai.sh 拉模型）");});
+  $id("aiFillDS").addEventListener("click",function(){$id("aiMode").value="openai";
+    $id("aiBase").value="https://api.deepseek.com/v1";$id("aiModel").value="deepseek-chat";
+    errbarShow("已填入 DeepSeek 端点，请在 Key 栏粘贴你在 platform.deepseek.com 申请的 API Key");});
   $id("aiSave").addEventListener("click",function(){AI.mode=$id("aiMode").value;AI.base=$id("aiBase").value.trim();AI.model=$id("aiModel").value.trim();AI.key=$id("aiKey").value.trim();saveAI();closeAiDlg();addMsg({who:"a",text:AI.mode==="off"?"已切回内置命令路由。":"AI 大脑已设为 "+(AI.model||AI.base)+"。"});});
   $id("aiTest").addEventListener("click",function(){var mode=$id("aiMode").value,base=$id("aiBase").value.trim(),model=$id("aiModel").value.trim(),key=$id("aiKey").value.trim();
     if(!base||!model){errbarShow("先填接口地址与模型名");return;}
