@@ -151,5 +151,75 @@ window.WB_P = [
     category: "model",
     tags: ["NeuroVLA", "世界模型", "类脑架构", "技术路线"],
     summary: "WRC 2026 技术路线观察：类脑 NeuroVLA、统一表征 Pelican-Unify、自进化 L4E/E4L 同台竞争，行业共识从『谁是大脑终极路线』转向如何增强系统化能力。"
+  },
+  {
+    id: "2609.05324", title: "RoboSPA: Can VLA Models Go Beyond Simple Scenes and Short-Horizon Tasks?",
+    authors: "Fan et al.",
+    url: "https://arxiv.org/abs/2609.05324",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-04", added_at: "2026-09-07",
+    category: "processing",
+    tags: ["VLA诊断", "评测基准", "难度分级", "空间推理"],
+    summary: "发布含 52.7 万条轨迹的大规模操作数据集与诊断基准 RoboSPA：280 个难度递进任务变体，用细粒度指标暴露 VLA 在复杂空间关系与长时程规划上的短板。"
+  },
+  {
+    id: "2609.05178", title: "LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models",
+    authors: "Liu et al.",
+    url: "https://arxiv.org/abs/2609.05178",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-04", added_at: "2026-09-07",
+    category: "processing",
+    tags: ["失败恢复", "评测基准", "LIBERO", "数据闭环"],
+    summary: "收集 SOTA 模型真实执行失败，构建 1000+ 四级恢复场景基准，把评测从『任务能不能成』转向『失败后会不会自救』，直指 benchmark 与真实可靠性的鸿沟。"
+  },
+  {
+    id: "2609.05369", title: "Towards Neuro-Symbolic Procedural Reasoning for Long-Horizon Vision-Language-Action Manipulation",
+    authors: "Chavan et al.",
+    url: "https://arxiv.org/abs/2609.05369",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-04", added_at: "2026-09-07",
+    category: "model",
+    tags: ["VLA", "长时程", "神经符号", "任务图"],
+    summary: "给 VLA 外挂显式任务图与多模态过程记忆，并用遥操作视频的伪注视标注引导微调，让长时程任务的顺序执行、条件分支与目标校验更可靠。"
+  },
+  {
+    id: "2609.04893", title: "Reasoning Without Inference Cost: Latent Semantic Scaffolding for Robot VLA Policies",
+    authors: "Li et al.",
+    url: "https://arxiv.org/abs/2609.04893",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-04", added_at: "2026-09-07",
+    category: "model",
+    tags: ["VLA", "预训练", "因果推理", "零开销"],
+    summary: "在人类演示预训练里加辅助损失，把动作 token 对齐到物理推理文本，部署时丢掉投影头、推理零额外开销，让 VLA 学会『为什么动』并更好迁移到新任务。"
+  },
+  {
+    id: "202609073866521685", title: "机器人数据喷涌，但危险的信号也出现了",
+    authors: "东方财富",
+    url: "https://finance.eastmoney.com/a/202609073866521685.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-07",
+    category: "collection",
+    tags: ["无本体采集", "数据产业", "京东宿迁", "风险警示"],
+    summary: "觅蜂无本体数据破百万小时、京东宿迁剑指千万小时采集社区，但部分数采项目失利警示：真金白银可能押错路线，数据供给放量与方向风险并存。"
+  },
+  {
+    id: "20260907A03AGU00", title: "成立三年，这家中国公司缘何与英伟达“同列”",
+    authors: "腾讯新闻",
+    url: "https://new.qq.com/rain/a/20260907A03AGU00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-07",
+    category: "format",
+    tags: ["开源数据集", "数据标准", "Ego数据", "持续学习"],
+    summary: "光轮智能开源十万小时全模态人类行为数据集 EgoSuite-Open100K，并配套仿真评测与真机反馈平台，以『开源建标准』统一采集口径、标注规范与格式。"
+  },
+  {
+    id: "70000021_3226a9e376c95852", title: "行业分歧声中，探访机器人数采场：谁在采？为谁采？如何采？",
+    authors: "南方都市报（N视频）",
+    url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_3226a9e376c95852",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-07",
+    category: "collection",
+    tags: ["数采场", "无本体采集", "质检", "众包"],
+    summary: "实地探访北京人形数据基地：数采员 8 小时产出约 3.5 小时有效数据，回流数据走自动化质检加人工抽检，样板基地与外部众包并行扩规模。"
   }
 ];
