@@ -221,5 +221,35 @@ window.WB_P = [
     category: "collection",
     tags: ["数采场", "无本体采集", "质检", "众包"],
     summary: "实地探访北京人形数据基地：数采员 8 小时产出约 3.5 小时有效数据，回流数据走自动化质检加人工抽检，样板基地与外部众包并行扩规模。"
+  },
+  {
+    id: "20260907A0C80I00", title: "全栈自研下，众擎机器人如何推进产业化？",
+    authors: "腾讯新闻",
+    url: "https://new.qq.com/rain/a/20260907A0C80I00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-08",
+    category: "collection",
+    tags: ["数据飞轮", "真机回流", "人形机器人", "VLA"],
+    summary: "众擎全栈自研跑通数据飞轮：SE01/PM01/T800 的真机与仿真运动数据集反哺 EngineAI Awaken 大脑，WAM 与 VLA 融合驱动部署数据回流再训练。"
+  },
+  {
+    id: "70000021_3206a9d4dc105252", title: "具身大脑打响“百模大战”：百万小时之后，数据仍然不够",
+    authors: "腾讯新闻",
+    url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_3206a9d4dc105252",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-08",
+    category: "collection",
+    tags: ["数据质量", "数据分层", "回流数据", "VLA"],
+    summary: "具身大脑百模大战下的数据反思：1 万小时里 9000 小时高度重复就难增新信息，银河通用将数据拆互联网/人类/合成/遥操/回流五层，比拼从规模转向质量分层。"
+  },
+  {
+    id: "70000021_5366a9f53bf38452", title: "通用机器人，正在从一种身体变成一种架构",
+    authors: "腾讯新闻",
+    url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_5366a9f53bf38452",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-07", added_at: "2026-09-08",
+    category: "format",
+    tags: ["跨本体", "统一表达", "VLA", "开源"],
+    summary: "跨本体能力复用成主线：蚂蚁灵波 LingBot-VLA 2.0 用 55 维规范表达容纳 20 种构型、CrossFormer 以 90 万轨迹跨 20 本体共训一套权重，换身体不必清零重学。"
   }
 ];
