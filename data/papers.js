@@ -251,5 +251,145 @@ window.WB_P = [
     category: "format",
     tags: ["跨本体", "统一表达", "VLA", "开源"],
     summary: "跨本体能力复用成主线：蚂蚁灵波 LingBot-VLA 2.0 用 55 维规范表达容纳 20 种构型、CrossFormer 以 90 万轨迹跨 20 本体共训一套权重，换身体不必清零重学。"
+  },
+  {
+    id: "2609.26520", title: "MATE: Multi-Agent Virtual Teleoperation Platform for Humanoid Collaboration Data Collection",
+    authors: "Yu et al.",
+    url: "https://arxiv.org/abs/2609.26520",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-26",
+    category: "collection",
+    tags: ["虚拟遥操作", "多智能体协作", "人形数据采集", "免场地"],
+    summary: "多智能体虚拟遥操作平台 MATE：多名异地操作员在同一物理仿真环境里同时操控全身人形机器人，省掉多台真机与专用场地，规模化采集协作型全身操作数据。"
+  },
+  {
+    id: "2609.28314", title: "TANDEM: Task and Motion Planning with As-Needed Demonstrations for Efficient Vision-Language-Action Model Fine-tuning",
+    authors: "Sahoo et al.",
+    url: "https://arxiv.org/abs/2609.28314",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-23", added_at: "2026-09-26",
+    category: "collection",
+    tags: ["按需演示", "TAMP 规划", "遥操作成本", "微调效率"],
+    summary: "指出人工遥操作大量时间浪费在机器人已会的动作上：TANDEM 把任务与运动规划当默认执行者，只在规划器力不能及处按需请人示范，压缩长时程任务采集成本。"
+  },
+  {
+    id: "2609.28429", title: "Watch, Recall, Act: Always-On Robots in Concurrent Embodied Streams",
+    authors: "Yi et al.",
+    url: "https://arxiv.org/abs/2609.28429",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-23", added_at: "2026-09-26",
+    category: "model",
+    tags: ["流式策略", "π0.5 骨干", "双臂并发", "长时记忆"],
+    summary: "面向永不重置的实时数据流：ARMS 在 π0.5 骨干上挂三个轻量模块，让机器人同时盯住远处线索、回想自己很久以前的动作，并在双臂并发下按指令到达与失效行动。"
+  },
+  {
+    id: "2609.26672", title: "Imperfection for Precision: Upcycling Imperfect Data for High-Precision Robotic Manipulation",
+    authors: "Wei et al.",
+    url: "https://arxiv.org/abs/2609.26672",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-26",
+    category: "processing",
+    tags: ["数据上循环", "低精度数据", "flow-matching", "高精度操作"],
+    summary: "把两类原本要丢弃的数据救回来：目标任务的低精度数据加不匹配任务的高精度数据，按 flow-matching 轨迹分段控制各自贡献位置，少采遥操作也能做高精度操作。"
+  },
+  {
+    id: "2609.27734", title: "InfiNoVA: Infinite Novel View Augmentation for Viewpoint Invariant Robot Policies",
+    authors: "Gottam, Rueckert & Dave",
+    url: "https://arxiv.org/abs/2609.27734",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-23", added_at: "2026-09-26",
+    category: "processing",
+    tags: ["视角增强", "3D 高斯", "新视角合成", "相机位姿"],
+    summary: "把同步多相机演示重建成时变 3D 高斯表征，从任意采样相机位姿渲染几何一致的新观测，用一份采集数据换稠密视角覆盖，治 VLA 换个机位就掉点的毛病。"
+  },
+  {
+    id: "2609.25562", title: "IndustrialVLA-Bench: A Traceable Multi-Axis Evaluation of Open Robot Policy Models",
+    authors: "Wang et al.",
+    url: "https://arxiv.org/abs/2609.25562",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-26",
+    category: "processing",
+    tags: ["统一评测", "VLA vs WAM", "可追溯报告", "部署成本"],
+    summary: "把六个已发布的 VLA 与世界动作模型放进同一报告口径：干净能力、鲁棒性、语言敏感度与部署成本分开评，让两条技术路线的取舍第一次变得可比。"
+  },
+  {
+    id: "2609.26292", title: "RoboTwin-Phys: Do WAMs and VLAs Understand the Physical World?",
+    authors: "Zhang et al.",
+    url: "https://arxiv.org/abs/2609.26292",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-26",
+    category: "processing",
+    tags: ["物理多样性", "仿真基准", "质量与摩擦", "泛化测试"],
+    summary: "现有仿真基准大多只变外观与布局、物理参数固定：RoboTwin-Phys 让 13 项物理属性（质量、摩擦、关节动力学）连续变化，专门暴露 WAM/VLA 对物理世界的理解短板。"
+  },
+  {
+    id: "2609.28865", title: "Direction-Scale Decomposition in Action Representation: Rethinking What to Tokenize for Vision-Language-Action Models",
+    authors: "Duan et al.",
+    url: "https://arxiv.org/abs/2609.28865",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-24", added_at: "2026-09-26",
+    category: "format",
+    tags: ["动作表征", "离散 token", "方向尺度分解", "归一化"],
+    summary: "离散动作 token 的表示方式长期被忽视：DSD 把平移与旋转增量先拆成方向与尺度再 token 化，让 token 不再随执行速度与数据集归一化漂移，跨演示共享几何结构。"
+  },
+  {
+    id: "2609.25820", title: "Beyond Reconstruction Error: Analytical and Data-Driven Action Tokenization for Autoregressive Vision-Language-Action Models",
+    authors: "Yang et al.",
+    url: "https://arxiv.org/abs/2609.25820",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-26",
+    category: "format",
+    tags: ["动作 token 化", "表征对比", "率失真", "闭环控制"],
+    summary: "重建误差低不等于控制得好：统一 token 化接口下对比解析、线性与非线性动作表征，3500 次 LIBERO rollout 显示排名随评价标准翻转，PCA 重建更准却序列更难预测。"
+  },
+  {
+    id: "2609.29850", title: "BeyondRetarget: Learning Executable Humanoid Motions Directly from Monocular Video",
+    authors: "Xiong et al.",
+    url: "https://arxiv.org/abs/2609.29850",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-24", added_at: "2026-09-26",
+    category: "format",
+    tags: ["单目视频", "动作重定向", "人形机器人", "可执行动作"],
+    summary: "绕开先建人体表征再重定向的老管线：直接从单目视频学人形机器人可执行的动作，避免人类与机器人运动机构、关节自由度差异导致误差逐级放大。"
+  },
+  {
+    id: "2609.30092", title: "Self-Adaptive VLA for Robust Robot Deployment",
+    authors: "Zhang et al.",
+    url: "https://arxiv.org/abs/2609.30092",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-24", added_at: "2026-09-26",
+    category: "model",
+    tags: ["部署自适应", "硬件漂移", "后训练", "自回放"],
+    summary: "针对磨损与标定误差导致的硬件漂移：先用刻意注入漂移的 rollout 做后训练，让 VLA 把自身回放当上下文在线自适应，免去每次部署都要重新现场标定。"
+  },
+  {
+    id: "20260925_L7MBM59P", title: "具身智能不缺数据，缺的是一条产线",
+    authors: "第一财经（网易转载）",
+    url: "https://www.163.com/dy/article/L7MBM59P0519DDQ2.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-25", added_at: "2026-09-26",
+    category: "processing",
+    tags: ["数据产线", "数据闭环", "训练闭环", "阿里云"],
+    summary: "阿里云云栖大会观点：卡点不在数据量而在缺一条工业化数据产线——时间对齐、Episode 分段、质检准入全自动，让数据闭环与训练闭环同转，迭代从周级压到日级。"
+  },
+  {
+    id: "20260925_7689495712379241002", title: "给机器人攒「经验」：上海这家企业探索物理 AI 众包数采",
+    authors: "上观新闻",
+    url: "https://www.toutiao.com/article/7689495712379241002",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-25", added_at: "2026-09-26",
+    category: "collection",
+    tags: ["众包采集", "MEgo 设备", "无本体数据", "原子动作"],
+    summary: "上观新闻探访觅蜂科技众包数采平台觅蜂派：MEgo 头戴设备多视角记录真实操作，长程动作拆成 120 多种原子动作，内测一个月注册 2 万人、提交 1.3 万份采集任务。"
+  },
+  {
+    id: "20260925_4475087", title: "未来智造局｜具身智能数据加速「上量」，如何定义「好数据」？",
+    authors: "新华财经",
+    url: "https://m.cnfin.com/gs-lb//zixun/20260925/4475087_1.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-25", added_at: "2026-09-26",
+    category: "format",
+    tags: ["无本体数据", "UMI", "Ego 数据", "数据标准"],
+    summary: "新华财经：觅蜂无本体数据破百万小时、穹彻自采 UMI 超 10 万小时，行业进入上量期，但真机 8 小时仅出 1 小时有效数据的低效仍在，好数据标准与本体适配仍待定义。"
   }
 ];
