@@ -391,5 +391,75 @@ window.WB_P = [
     category: "format",
     tags: ["无本体数据", "UMI", "Ego 数据", "数据标准"],
     summary: "新华财经：觅蜂无本体数据破百万小时、穹彻自采 UMI 超 10 万小时，行业进入上量期，但真机 8 小时仅出 1 小时有效数据的低效仍在，好数据标准与本体适配仍待定义。"
+  },
+  {
+    id: "2609.27160", title: "Fine Wrist Control as a Marker of Surgical Teleoperation Expertise",
+    authors: "Gale et al.",
+    url: "https://arxiv.org/abs/2609.27160",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-27",
+    category: "collection",
+    tags: ["遥操作", "操作者技能", "腕部运动", "采集质量"],
+    summary: "用运动追踪对比 27 名新手与 9 名专家的遥操作生物力学：难动作时专家更稳地锁定腕部、肩肘仍留足活动范围且完成更快，说明操作者技能本身是可量化的采集质量变量。"
+  },
+  {
+    id: "2609.25630", title: "PAKT: Physically-Aligned Kinesthetic Teaching for Reinforcement Learning",
+    authors: "Johannsmeier & Narang, NVIDIA",
+    url: "https://arxiv.org/abs/2609.25630",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-27",
+    category: "collection",
+    tags: ["动觉示教", "接触密集任务", "物理约束", "示教接口"],
+    summary: "接触密集工业操作里遥操作不够用：PAKT 改用工业界更常见的动觉示教，并把操作者拖动的轨迹约束到机器人物理可复现范围内，让现场工人直接手把手教策略。"
+  },
+  {
+    id: "2609.26313", title: "SafeLoop: Risk-Aware Rollback for Vision-Language-Action Manipulation",
+    authors: "Lou et al.",
+    url: "https://arxiv.org/abs/2609.26313",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-22", added_at: "2026-09-27",
+    category: "processing",
+    tags: ["失败恢复", "风险预测", "回滚", "非侵入外挂"],
+    summary: "给 VLA 外挂一层不改参数的闭环安全网：从视觉与本体感觉预测碰撞/掉物概率与剩余时间，据此选择继续执行、存安全检查点或关节空间回退，把不可逆失败挡在发生之前。"
+  },
+  {
+    id: "20260926A032RN00", title: "华为腾讯阿里都盯上的生意：不造机器人，却想控制所有机器人？",
+    authors: "腾讯新闻",
+    url: "https://news.qq.com/rain/a/20260926A032RN00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-26", added_at: "2026-09-27",
+    category: "model",
+    tags: ["技术路线", "世界模型", "VLA", "数据量级"],
+    summary: "拆解具身大脑三条主流路线的取舍与混搭：端到端 VLA 起步快但依赖训练分布，世界模型需千万小时级真实交互数据，而截至 2026 年初全球合规可用仅 50 万小时。"
+  },
+  {
+    id: "20260926A03SJH00", title: "给机器人当老师，都教什么课？",
+    authors: "腾讯新闻（财米油盐）",
+    url: "https://news.qq.com/rain/a/20260926A03SJH00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-26", added_at: "2026-09-27",
+    category: "collection",
+    tags: ["采集员职业", "训练场", "无本体采集", "真机遥操"],
+    summary: "「具身智能机器人应用技术员」入列国家新职业：北京亦庄基地采集员 8 小时产出 4-5 小时有效数据；信通院报告指千万小时需求与数十万至百万小时供给存在量级差。"
+  },
+  {
+    id: "20260926_1081029800", title: "让普通人给机器人喂数据：众包数采是门好生意吗？",
+    authors: "红星新闻（搜狐转载）",
+    url: "https://www.sohu.com/a/1081029800_121925623",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-26", added_at: "2026-09-27",
+    category: "collection",
+    tags: ["众包采集", "商业模式", "数据分级", "隐私边界"],
+    summary: "红星新闻追问众包数采的账怎么算：Figure Index 已按质量时长付费试水，觅蜂派开放普通人接单；过去一年新增 106 家集中式数采中心、84 家运营，但多数未形成稳定商业闭环。"
+  },
+  {
+    id: "20260927_L7PSDKIQ0511C4AA", title: "融1000万就想做具身智能数据？对话觅蜂 CEO 姚卯青",
+    authors: "网易",
+    url: "https://www.163.com/dy/article/L7PSDKIQ0511C4AA.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-27", added_at: "2026-09-27",
+    category: "collection",
+    tags: ["数据获取曲线", "场景丰富度", "行业分工", "Ego 数据"],
+    summary: "觅蜂 CEO 谈为何转向众包：百万小时已满足不了 2026 年底的需求，必须开启数据获取第二增长曲线；叠衣服数据早已泛滥，场景丰富度与专业技能才是下一个瓶颈。"
   }
 ];
