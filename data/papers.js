@@ -461,5 +461,55 @@ window.WB_P = [
     category: "collection",
     tags: ["数据获取曲线", "场景丰富度", "行业分工", "Ego 数据"],
     summary: "觅蜂 CEO 谈为何转向众包：百万小时已满足不了 2026 年底的需求，必须开启数据获取第二增长曲线；叠衣服数据早已泛滥，场景丰富度与专业技能才是下一个瓶颈。"
+  },
+  {
+    id: "20260927A08E5P00", title: "把摄像头戴在人头上，能解决机器人「数据荒」吗？",
+    authors: "观察者网（腾讯新闻）",
+    url: "https://news.qq.com/rain/a/20260927A08E5P00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-27", added_at: "2026-09-28",
+    category: "collection",
+    tags: ["头戴设备", "众包采集", "EgoScale", "降本路径"],
+    summary: "复盘数采路线三次降本：真机遥操单小时 500-1000 元，UMI 夹爪降门槛，EgoScale 用 2 万小时人类第一视角视频预训练、4 小时真机微调做到 88% 成功率。"
+  },
+  {
+    id: "20260927_A1790413232034", title: "觅蜂科技推出物理 AI 数据众包平台「觅蜂派」",
+    authors: "证券日报",
+    url: "http://www.zqrb.cn/gscy/qiyexinxi/2026-09-27/A1790413232034.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-27", added_at: "2026-09-28",
+    category: "collection",
+    tags: ["众包平台", "MEgo 设备", "原子动作", "场景联盟"],
+    summary: "觅蜂派发布：覆盖 22 类场景、5000 多个任务、5 万个真实环境，长程任务拆成 120 多种原子动作分级交付，并联合 50 余家企业组建场景数据联盟。"
+  },
+  {
+    id: "20260927_162d6782c06704zfga", title: "从 Computer-Use 到 Robot-Use：一套接口让 VLM 直接「玩转」真实机器人",
+    authors: "机器之心（新加坡国立大学 Show Lab）",
+    url: "https://k.sina.com.cn/article_5953189932_162d6782c06704zfga.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-27", added_at: "2026-09-28",
+    category: "model",
+    tags: ["VLM Agent", "工具调用", "免适配", "跨本体"],
+    summary: "把机器人操作抽象成 click/type 式工具接口，让 frontier VLM 免训练直接操控真机，绕开传统 VLA 逐本体适配与规划执行脱节两个老问题。"
+  },
+  {
+    id: "20260927_162dab0450670bdo7e", title: "CoRL 2026：0 条带力数据预训练，上海交大团队让 VLA 学会力",
+    authors: "机器之心（上海交大卢策吾、汶川团队）",
+    url: "https://k.sina.cn/article_5953466437_162dab0450670bdo7e.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-27", added_at: "2026-09-28",
+    category: "model",
+    tags: ["力感知", "后训练", "接触密集", "模态稀缺"],
+    summary: "力数据采集贵且难规模化：LIFT 保留纯视觉预训练知识，仅用 20-30 条在线带力数据做后训练注入反应式力，叠毛巾 73.3→84.2、插书 36.7→58.3。"
+  },
+  {
+    id: "20260928_initirzi8832973", title: "索辰科技联合美梦空间发布 Physical-WAM 与物理漂移评测基准",
+    authors: "新浪财经（财联社）",
+    url: "https://finance.sina.com.cn/roll/2026-09-28/doc-initirzi8832973.shtml",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-28", added_at: "2026-09-28",
+    category: "model",
+    tags: ["世界动作模型", "物理评测", "开源基准", "物理漂移"],
+    summary: "VLA 遇空间偏移与时序外推成功率断崖下跌：Physical-WAM 把摩擦、质量、重心编码成物理 token，配套 RoboTwin-Phys 基准做固定种子配对评测，代码数据榜单开源。"
   }
 ];
