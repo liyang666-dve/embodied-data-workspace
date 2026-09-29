@@ -511,5 +511,115 @@ window.WB_P = [
     category: "model",
     tags: ["世界动作模型", "物理评测", "开源基准", "物理漂移"],
     summary: "VLA 遇空间偏移与时序外推成功率断崖下跌：Physical-WAM 把摩擦、质量、重心编码成物理 token，配套 RoboTwin-Phys 基准做固定种子配对评测，代码数据榜单开源。"
+  },
+  {
+    id: "2609.30735", title: "Praxis: Distilling Physical Interaction Priors from Egocentric Videos for Generalizable Whole-Body Manipulation",
+    authors: "He et al.",
+    url: "https://arxiv.org/abs/2609.30735",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "collection",
+    tags: ["Ego视频", "全身操作", "交互先验", "少样本泛化"],
+    summary: "从单次第一视角视频里蒸馏物理交互先验，叠加闭环姿态校准与在线感知，让移动人形在物体位姿与接触条件变化下仍保住精准手物交互。"
+  },
+  {
+    id: "2609.30842", title: "Impedance Cloning: Learning Equilibrium Point Parameters for Contact-Rich Manipulation",
+    authors: "Takahashi et al.",
+    url: "https://arxiv.org/abs/2609.30842",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "format",
+    tags: ["阻抗克隆", "平衡点参数", "接触密集", "无传感器提取"],
+    summary: "不模仿可观测轨迹而模仿产生动作的生物力学先验：从双臂遥操作示教中用粒子滤波免力传感器提取刚度与平衡点，表面几何一变仍能稳住。"
+  },
+  {
+    id: "2609.31225", title: "Imp-ACT: Adaptive Impedance Control and Action Chunking with Transformers to Learn Contact-Rich Manipulation from Demonstrations",
+    authors: "Zanetti et al.",
+    url: "https://arxiv.org/abs/2609.31225",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "collection",
+    tags: ["阻抗调制", "示教采集", "动作分块", "接触密集"],
+    summary: "把方向相关的笛卡尔刚度调制直接做进示教采集环节：遥操作时自整定阻抗控制器沿运动方向调刚度，并随视觉观测一起记录，免人工选刚度。"
+  },
+  {
+    id: "2609.31418", title: "CognitiveReality: Robot-Agnostic Semantic Gaussian Mapping with an LLM Agent for Immersive Collaborative VR Teleoperation",
+    authors: "Kozlov et al.",
+    url: "https://arxiv.org/abs/2609.31418",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "collection",
+    tags: ["VR遥操作", "语义高斯建图", "机器人无关", "语言指令"],
+    summary: "把机器人 RGB-D 流变成带语义索引的实时高斯-TSDF 地图，VR 操作员与语言 Agent 共享：一套建图程序靠配置适配任意平台，语音指点即转机器人动作。"
+  },
+  {
+    id: "2609.31048", title: "Kintsugi-VLA: Turning Failed Robot Rollouts into Recovery Data through Interventional Recoverability",
+    authors: "Snegirev et al.",
+    url: "https://arxiv.org/abs/2609.31048",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "processing",
+    tags: ["失败数据复用", "恢复数据", "仿真分支", "可恢复性"],
+    summary: "指出仿真管线把失败 rollout 直接丢掉太浪费：借精确状态还原与分支，把失败轨迹转成定向合成的恢复数据，并用干预可恢复性挑出最值得留的状态。"
+  },
+  {
+    id: "2609.30868", title: "VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL",
+    authors: "Saito et al.",
+    url: "https://arxiv.org/abs/2609.30868",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "processing",
+    tags: ["残差RL", "仿真训练", "冻结VLA", "潜空间对齐"],
+    summary: "冻结 VLA 只训残差策略修正接触误差，且全部在仿真里训好再直接上真机：用 VLA 潜空间而非像素对齐绕开 sim2real 视觉差距，免真机 RL。"
+  },
+  {
+    id: "2609.30833", title: "Fast Plans, Faithful Actions: Closing the Planning-Execution Gap in Hierarchical Vision-Language-Action Models",
+    authors: "Xie et al.",
+    url: "https://arxiv.org/abs/2609.30833",
+    source: "arxiv", lang: "en",
+    pub_date: "2026-09-25", added_at: "2026-09-29",
+    category: "model",
+    tags: ["分层VLA", "π0.5", "规划执行鸿沟", "推理加速"],
+    summary: "拆解 π0.5 式分层 VLA 发现两处失效：waypoint 规划要 57 次昂贵 VLM 前向、且规划结果对动作生成几乎无贡献，作者分别从解码与执行两端把链路接上。"
+  },
+  {
+    id: "20260928A04O4G00", title: "从真机到世界模型，具身智能正在补一条看不见的数据产线",
+    authors: "腾讯新闻",
+    url: "https://news.qq.com/rain/a/20260928A04O4G00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-28", added_at: "2026-09-29",
+    category: "processing",
+    tags: ["数据产线", "数据飞轮", "数据工程化", "云栖大会"],
+    summary: "云栖大会具身论坛判断：数据时长正在失去意义、模型增益才是计价单位，行业从「找数据」进入「造数据、管数据、用反馈再生产数据」阶段。"
+  },
+  {
+    id: "20260928A06QLE00", title: "千万小时缺口下的突围：谁在为中国具身智能「喂」数据？",
+    authors: "腾讯新闻",
+    url: "https://news.qq.com/rain/a/20260928A06QLE00",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-28", added_at: "2026-09-29",
+    category: "collection",
+    tags: ["千万小时缺口", "训练场重资产", "场景壁垒", "长尾技能"],
+    summary: "信通院数据：全国已建成超 70 家具身训练场、46 家在建，但仅部署百台人形本体成本就达数千万；觅蜂称合规场景数据仅约 100 万小时，缺口超 99%。"
+  },
+  {
+    id: "20260928_initktny2919210", title: "从数据到智能，再到进化：Agent 正在重写 AI 基础设施",
+    authors: "新浪科技",
+    url: "https://tech.sina.cn/2026-09-28/detail-initktny2919210.d.html",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-28", added_at: "2026-09-29",
+    category: "processing",
+    tags: ["数据处理工序", "版本迭代", "LeRobot格式", "全模态引擎"],
+    summary: "穹彻吕峻称具身数据从采集到训练要过几十道处理、一次版本迭代短则两周长则一月；阿里云称新管线让处理耗时降 40%，PB 级原始数据直出 LeRobot/RLDS。"
+  },
+  {
+    id: "20260928_citnews222290", title: "量产前夜，机器人衍生赛道先火了",
+    authors: "惊蛰研究所（中文科技资讯）",
+    url: "https://www.citnews.com.cn/news/222290",
+    source: "cn", lang: "cn",
+    pub_date: "2026-09-28", added_at: "2026-09-29",
+    category: "collection",
+    tags: ["数据农场", "场景复刻", "数据交付", "衍生服务"],
+    summary: "具身数据农场成独立生意：北京人形创新中心 5000 平米复刻 30 多场景、月产约 1.5 万小时并对外交付，基础重复动作数据价值被仿真稀释。"
   }
 ];
